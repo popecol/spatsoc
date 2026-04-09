@@ -28,9 +28,8 @@ p <- s_table[grep("^s", nam), ][["p.value"]]
 p_val <- format_pval(p, show_stars = TRUE)
 
 
-# Histogram ---------------------------------------------------------------
-
-# Parameters
+# Figure 1 ----------------------------------------------------------------
+# Frequency distribution of the Normalised Spatial Dispersion Index (NSDI)
 
 col <- adjustcolor("black", alpha = 0.5)
 
@@ -47,10 +46,7 @@ hi <- round(mult * h / 25.4, 1)
 
 cairo_pdf("Figures/Figure_1.pdf", width = wi, height = hi, symbolfamily = "OpenSymbol")
 
-
-# Figure 1
-
-op <- par(mar = c(5, 5, 4, 2)) # mar = c(bottom, left, top, right)
+op <- par(mar = c(5, 5, 4, 2))
 
 hist(data$dispersion, breaks = "Scott", main = "",
      col = col, xlab = ylab, cex.lab = 1.5, cex.axis = 1.2, ylab = "Frequency")
@@ -60,13 +56,11 @@ par(op)
 
 dev.off()
 
-# Single-term effects -----------------------------------------------------
 
-# Parameters
+# Figure 2 ----------------------------------------------------------------
+# Marginal main effects of socio-ecological predictors 
 
 col <- adjustcolor("black", alpha = 0.8)
-
-ylab <- "Normalised Spatial Dispersion Index"
 
 mult <- 1.3
 
@@ -78,9 +72,6 @@ wi <- round(mult * w / 25.4, 1)
 hi <- round(mult * h / 25.4, 1)
 
 cairo_pdf("Figures/Figure_2.pdf", width = wi, height = hi, symbolfamily = "OpenSymbol")
-
-
-# Figure 2
 
 op <- par(mfrow = c(2, 3), oma = c(0, 5, 0, 0), mar = c(5, 2, 2, 2)) 
 
@@ -96,15 +87,22 @@ par(op)
 dev.off()
 
 
-# Interaction terms -------------------------------------------------------
+# Figure 3 ----------------------------------------------------------------
+# Interaction effects between local conspecific density and predation risk
 
-# Parameters
+# Levels of crow abundance
+quantile(data$Crow, probs = c(0, 0.5, 0.95), na.rm = TRUE)
+crow_lev <- c(0, 4)
+log1p(crow_lev)
+
+# Levels of lapwing abundance
+quantile(data$Lapwing, probs = c(0, 0.5, 0.95), na.rm = TRUE)
+lap_lev <- c(3, 9)
+log1p(lap_lev)
 
 cols_lap <- c("#56B4E9", adjustcolor("#56B4E9", alpha = 0.5))
 
 cols_crow <- c("#D55E00",adjustcolor("#D55E00", alpha = 0.5))
-
-ylab <- "Normalised Spatial Dispersion Index"
 
 mult <- 1.5
 
@@ -119,34 +117,22 @@ hi <- round(mult * h / 25.4, 1)
 
 cairo_pdf("Figures/Figure_3.pdf", width = wi, height = hi, symbolfamily = "OpenSymbol")
 
-
-# Figure 3
-
 op <- par(mfrow = c(1, 2), mar = c(5, 5, 2, 2))
 
-quantile(data$Crow, probs = c(0, 0.5, 0.95), na.rm = TRUE)
-crow_lev <- c(0, 4)
-log1p(crow_lev)
-
+# Panel (a)
 term_plot(m, ~ log_Lapwing + log_Crow, group_levels = log1p(crow_lev), xlab = "Lapwing density", ylab = ylab, cex.lab = 1.2, col_pal = cols_crow, ylim = c(0.2, 1.2))
-
 
 mtext(letters[1], side = 3, line = 0.5, cex = 1.2, adj = 0, font = 2)
 
 legend("topleft", title = "Crow abundance", legend = crow_lev, col = cols_crow, lty = 1:2, lwd = 2, bty = "n")
 
-quantile(data$Lapwing, probs = c(0, 0.5, 0.95), na.rm = TRUE)
-lap_lev <- c(3, 9)
-log1p(lap_lev)
-
+# Panel (b)
 term_plot(model = m, formula = ~ log_Crow + log_Lapwing, group_levels = log1p(lap_lev), xlab = "Crow density", ylab = "", cex.lab = 1.2, col_pal = cols_lap, ylim = c(0.2, 1.2))
 
 mtext(letters[2], side = 3, line = 0.5, cex = 1, adj = 0, font = 2)
 
 legend("topleft", title = "Lapwing abundance", legend = lap_lev, col = cols_lap, lty = 1:2, lwd = 2, bty = "n")
 
-
 par(op)
 
 dev.off()
-

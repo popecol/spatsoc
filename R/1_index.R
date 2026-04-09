@@ -106,7 +106,6 @@ prob <- c(0.3435, 0.2716, 0.1262, 0.0927, 0.0543, 0.024, 0.0272, 0.0208, 0.0064,
           0.0096, 0.0016, 0.0064, 0.0016, 0.0032, 0.0032, 0.0016, 0.0016, 0.0016,
           0, 0, 0.0016, 0.0016)
 
-
 # Setting the seed for reproducibility
 set.seed(1)
 
@@ -132,13 +131,14 @@ ddat <- base_grid |>
   }) |>
   dplyr::ungroup()
 
+
 # Calculate the index -----------------------------------------------------
 
 ddat_splitted <- split(ddat, ddat$id, drop = TRUE)
 
 set.seed(1)
 ddat_splitted <- pblapply(ddat_splitted, disp, n_sim = 1000)
-ddat_splitted
+# ddat_splitted
 
 ddat <- do.call(rbind.data.frame, ddat_splitted)
 
