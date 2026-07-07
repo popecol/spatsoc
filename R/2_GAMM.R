@@ -32,7 +32,7 @@ f <- dispersion ~ s(log_Lapwing, k = k) + s(log_Crow, k = k) + ti(log_Crow, log_
 k <- 6
 
 # Full model
-m <- gam(f01, data, family = Gamma("log"), control = ctrl)
+m <- gam(f01, data, family = Gamma("log"), control = ctrl, method = "REML")
 
 summary(m)
 
