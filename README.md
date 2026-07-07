@@ -1,4 +1,6 @@
-[![DOI](https://zenodo.org/badge/1204163910.svg)](https://doi.org/10.5281/zenodo.19480894)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21238413.svg)](https://doi.org/10.5281/zenodo.21238413)
+
+
 # spatsoc
 Behavioural plasticity at the spatial-social interface.
 
